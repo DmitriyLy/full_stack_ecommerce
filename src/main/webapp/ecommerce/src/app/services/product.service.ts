@@ -16,12 +16,8 @@ export class ProductService {
   constructor(private httpClient: HttpClient) { }
 
   public getProductList(categoryId: number): Observable<Product[]> {
-
     const searchUrl: string = `${ProductService.BASE_URL}/search/findByCategoryId?id=${categoryId}`;
-
-    return this.httpClient.get<GeProductResponse>(searchUrl).pipe(
-      map(response => response._embedded.products)
-    );
+    return this.getProducts(searchUrl);
   }
 
   public getProductCategories(): Observable<ProductCategory[]> {
@@ -29,6 +25,18 @@ export class ProductService {
       map(response => response._embedded.productCategory)
     );
   }
+
+  public searchProducts(keyword: string): Observable<Product[]> {
+    const searchUrl: string = `${ProductService.BASE_URL}/search/findByNameContaining?name=${keyword}`
+    return this.getProducts(searchUrl);
+  }
+
+  private getProducts(url: string): Observable<Product[]> {
+    return this.httpClient.get<GeProductResponse>(url).pipe(
+      map(response => response._embedded.products)
+    );
+  }
+
 }
 
 interface GeProductResponse {
