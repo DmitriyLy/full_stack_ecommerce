@@ -12,12 +12,16 @@ export class ProductListComponent implements OnInit {
   private static readonly DEFAULT_CATEGORY_ID: number = 1;
 
   private products: Product[];
+  private currentCategoryName: string;
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(() => this.listProducts());
+    this.route.paramMap.subscribe(() => {
+      this.listProducts();
+      this.currentCategoryName = this.getCurrentCategoryName();
+    });
   }
 
   private listProducts(): void {
@@ -31,6 +35,10 @@ export class ProductListComponent implements OnInit {
     } else {
       return ProductListComponent.DEFAULT_CATEGORY_ID;
     }
+  }
+
+  private getCurrentCategoryName(): string {
+    return this.route.snapshot.paramMap.get('name');
   }
 
 }
