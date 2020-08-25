@@ -20,6 +20,13 @@ export class ProductService {
     return this.httpClient.get<Product>(url);
   }
 
+  public getProductListPaginate(categoryId: number,
+                                page: number,
+                                size: number): Observable<GeProductResponse> {
+    const searchUrl: string = `${ProductService.BASE_URL}/search/findByCategoryId?id=${categoryId}&page=${page}&size=${size}`;
+    return this.httpClient.get<GeProductResponse>(searchUrl);
+  }
+
   public getProductList(categoryId: number): Observable<Product[]> {
     const searchUrl: string = `${ProductService.BASE_URL}/search/findByCategoryId?id=${categoryId}`;
     return this.getProducts(searchUrl);
@@ -44,14 +51,22 @@ export class ProductService {
 
 }
 
-interface GeProductResponse {
+export interface GeProductResponse {
   _embedded: {
     products: Product[];
-  }
+  },
+  page: PaginationParams
 }
 
-interface GeProductCategoryResponse {
+export interface GeProductCategoryResponse {
   _embedded: {
     productCategory: ProductCategory[];
   }
+}
+
+export interface PaginationParams {
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  number: number;
 }
