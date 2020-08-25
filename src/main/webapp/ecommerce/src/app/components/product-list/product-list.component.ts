@@ -18,8 +18,10 @@ export class ProductListComponent implements OnInit {
   private previousCategoryId: number = ProductListComponent.DEFAULT_CATEGORY_ID;
 
   private pageNumber: number = 1;
-  private pageSize: number = 10;
+  private pageSize: number = 5;
   private pageTotalElements: number;
+
+  private previousKeyword: string = null;
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute) { }
@@ -30,6 +32,12 @@ export class ProductListComponent implements OnInit {
       this.currentCategoryName = this.getCurrentCategoryName();
       this.listProducts();
     });
+  }
+
+  public updatePageSize(pageSize: number): void {
+    this.pageSize = pageSize;
+    this.pageNumber = 1;
+    this.listProducts();
   }
 
   private listProducts(): void {
@@ -72,7 +80,18 @@ export class ProductListComponent implements OnInit {
   private handleSearchProducts(): void {
     const keyword: string = this.route.snapshot.paramMap.get('keyword');
 
-    this.productService.searchProducts(keyword).subscribe(data => this.products = data);
+    if (keyword != this.previousKeyword) {
+      this.pageNumber = 1;
+    }
+
+    this.previousKeyword = keyword;
+
+
+    this.productService.searchProductListPaginate(keyword, this.pageNumber - 1, this.pageSize)
+      .subscribe(data => {
+        this.products = data._embedded.products;
+        this.fillPaginationParams(data.page);
+      });
   }
 
   private fillPaginationParams(params: PaginationParams): void {
