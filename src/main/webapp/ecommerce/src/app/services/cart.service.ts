@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { CartItem } from "../common/cart-item";
-import { Subject } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +7,8 @@ import { Subject } from "rxjs";
 export class CartService {
 
   public cartItems: CartItem[] = [];
-
-  public cartStatusInfo$: Subject<CartStatusInfo> = new Subject<CartStatusInfo>();
+  public totalQuantity: number = 0;
+  public totalSum: number = 0;
 
   constructor() { }
 
@@ -23,28 +22,40 @@ export class CartService {
       this.cartItems.push(newItem);
     }
 
-    this.informCartStatusChange();
+    this.computeTotals();
 
   }
 
-  private informCartStatusChange(): void {
-    this.cartStatusInfo$.next(this.getCartStatusInfo());
-  }
+  public decrementQuantity(cartItem: CartItem): void {
+    cartItem.quantity--;
 
-  private getCartStatusInfo(): CartStatusInfo {
-    let cartStatusInfo: CartStatusInfo = {totalQuantity: 0, totalSum: 0};
-
-    for (let cartItem of this.cartItems) {
-      cartStatusInfo.totalQuantity += cartItem.quantity;
-      cartStatusInfo.totalSum += cartItem.quantity * cartItem.unitPrice;
+    if (cartItem.quantity == 0) {
+      this.removeCartItem(cartItem)
+    } else {
+      this.computeTotals();
     }
 
-    return cartStatusInfo;
   }
 
-}
+  public removeCartItem(cartItem: CartItem): void {
+    const itemIndex: number = this.cartItems.findIndex(item => item.id == cartItem.id);
+    if (itemIndex > -1) {
+      this.cartItems.splice(itemIndex, 1);
+      this.computeTotals();
+    }
+  }
 
-export interface CartStatusInfo {
-  totalSum: number;
-  totalQuantity: number;
+  private computeTotals(): void {
+    let tempQuantity: number = 0;
+    let tempSum: number = 0;
+
+    this.cartItems.forEach(item => {
+      tempQuantity += item.quantity;
+      tempSum += item.unitPrice * item.quantity;
+    });
+
+    this.totalSum = tempSum;
+    this.totalQuantity = tempQuantity;
+  }
+
 }

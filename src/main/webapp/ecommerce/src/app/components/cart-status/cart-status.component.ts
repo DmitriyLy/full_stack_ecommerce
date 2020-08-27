@@ -8,16 +8,9 @@ import {CartService} from "../../services/cart.service";
 })
 export class CartStatusComponent implements OnInit {
 
-  private totalSum: number = 0;
-  private totalQuantity: number = 0;
-
   constructor(private cartService: CartService) { }
 
   ngOnInit() {
-    this.cartService.cartStatusInfo$.subscribe(statusInfo => {
-      this.totalQuantity = statusInfo.totalQuantity;
-      this.totalSum = statusInfo.totalSum;
-    });
   }
 
 }
