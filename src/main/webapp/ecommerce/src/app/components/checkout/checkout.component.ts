@@ -3,6 +3,8 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {CartService} from "../../services/cart.service";
 import {CheckoutFormServiceService} from "../../services/checkout-form-service.service";
 import {map} from "rxjs/operators";
+import {Country} from "../../common/country";
+import {State} from "../../common/state";
 
 @Component({
   selector: 'app-checkout',
@@ -15,6 +17,9 @@ export class CheckoutComponent implements OnInit {
   private billingAddressEqualsShippingAddress: boolean = false;
   private expirationYears: string[] = [];
   private expirationMonthes: string[] = [];
+  private countries: Country[] = [];
+  private shippingStates: State[] = [];
+  private billingStates: State[] = [];
 
   constructor(private formBuilder: FormBuilder,
               private cartService: CartService,
@@ -73,6 +78,9 @@ export class CheckoutComponent implements OnInit {
       )
       .subscribe(data => this.expirationMonthes = data);
 
+    this.formService.getCountries()
+      .subscribe(data => this.countries = data);
+
   }
 
   onSubmit(): void {
@@ -84,15 +92,32 @@ export class CheckoutComponent implements OnInit {
     this.billingAddressEqualsShippingAddress = event.target.checked;
   }
 
-  private getExpirationYears(): Array<string> {
+  getStates(formGroupName: string): void {
 
-    let result : Array<string> = [];
-    let currentYear: number = (new Date()).getFullYear();
+    const formGroup = this.checkoutFormGroup.get(formGroupName);
+    const country = formGroup.value.country;
 
-    for (let i = 0; i < 15; i++) {
-      result.push("" + (currentYear + i));
+    formGroup.value.state = "";
+
+    let statesArray = this.getStatesArrayByFormGroupName(formGroupName);
+    while (statesArray.length) {
+      statesArray.pop();
     }
 
-    return result;
+    if (!country) {
+      return;
+    }
+
+    this.formService.getStatesByCountryCode(country.code)
+      .subscribe(data => data.forEach(item => statesArray.push(item)));
+
+  }
+
+  private getStatesArrayByFormGroupName(formGroupName: string): State[] {
+    if (formGroupName === 'shippingAddress') {
+      return this.shippingStates;
+    } else {
+      return this.billingStates;
+    }
   }
 }
