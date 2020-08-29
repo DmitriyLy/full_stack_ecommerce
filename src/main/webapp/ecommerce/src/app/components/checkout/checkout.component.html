@@ -156,6 +156,90 @@
 
         </div>
 
+        <!--card info-->
+
+        <div formGroupName="creditCard" class="form-area">
+          <h3>Payment Details</h3>
+
+          <div class="row">
+            <div class="col-md-2"><label>Card Type</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <select formControlName="cardType">
+                  <option>Visa</option>
+                  <option>Mastercard</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"><label>Name On Card</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input formControlName="nameOnCard" type="text">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"><label>Card Number</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input formControlName="cardNumber" type="text">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"><label>Security Code</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input formControlName="securityCode" type="text">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"><label>Expiration Month</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <select formControlName="expirationMonth">
+                  <option></option>
+                  <option *ngFor="let month of expirationMonthes">
+                    {{ month }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"><label>Expiration Month</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <select formControlName="expirationMonth">
+                  <option></option>
+                  <option *ngFor="let year of expirationYears">
+                    {{ year }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!--order details-->
+        <div class="form-area">
+          <h3>Order Totals</h3>
+
+          <p>Total Quantity: {{ cartService.totalQuantity }}</p>
+          <p>Total price: {{ cartService.totalSum | currency: 'USD' }}</p>
+          <p>Shipping: FREE</p>
+
+        </div>
+
         <!--submit button-->
         <div class="text-center">
           <button type="submit" class="btn btn-info">Purchase</button>

@@ -26,6 +26,20 @@ CREATE TABLE IF NOT EXISTS product (
 	CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES product_category (id)
 );
 
+CREATE TABLE IF NOT EXISTS country (
+  id SERIAL,
+  code VARCHAR(2) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS state (
+  id SERIAL,
+  name VARCHAR(255) NOT NULL,
+  country_id INT NOT NULL,
+  CONSTRAINT fk_country FOREIGN KEY(country_id) REFERENCES country(id)
+);
+
 -- -----------------------------------------------------
 -- Categories
 -- -----------------------------------------------------
@@ -149,3 +163,138 @@ INSERT INTO PRODUCT (SKU, NAME, DESCRIPTION, IMAGE_URL, ACTIVE, UNITS_IN_STOCK, 
 INSERT INTO PRODUCT (SKU, NAME, DESCRIPTION, IMAGE_URL, ACTIVE, UNITS_IN_STOCK, UNIT_PRICE, CATEGORY_ID,DATE_CREATED) VALUES ('LUGGAGETAG-1022', 'Luggage Tag - Sunset', 'This luggage tag will help you identify your luggage. The luggage tag is very unique and it will stand out from the crowd. The luggage tag is created out of a rugged and durable plastic. Buy this luggage tag now to make it easy to identify your luggage!', 'assets/images/products/placeholder.png', true, 100, 16.99, 4, NOW());
 INSERT INTO PRODUCT (SKU, NAME, DESCRIPTION, IMAGE_URL, ACTIVE, UNITS_IN_STOCK, UNIT_PRICE, CATEGORY_ID,DATE_CREATED) VALUES ('LUGGAGETAG-1023', 'Luggage Tag - Flames', 'This luggage tag will help you identify your luggage. The luggage tag is very unique and it will stand out from the crowd. The luggage tag is created out of a rugged and durable plastic. Buy this luggage tag now to make it easy to identify your luggage!', 'assets/images/products/placeholder.png', true, 100, 16.99, 4, NOW());
 INSERT INTO PRODUCT (SKU, NAME, DESCRIPTION, IMAGE_URL, ACTIVE, UNITS_IN_STOCK, UNIT_PRICE, CATEGORY_ID,DATE_CREATED) VALUES ('LUGGAGETAG-1024', 'Luggage Tag - Countryside', 'This luggage tag will help you identify your luggage. The luggage tag is very unique and it will stand out from the crowd. The luggage tag is created out of a rugged and durable plastic. Buy this luggage tag now to make it easy to identify your luggage!', 'assets/images/products/placeholder.png', true, 100, 16.99, 4, NOW());
+
+-- -----------------------------------------------------
+-- Countries
+-- -----------------------------------------------------
+INSERT INTO COUNTRY(code, name) VALUES ('BR', 'Brazil');
+INSERT INTO COUNTRY(code, name) VALUES ('CA', 'Canada');
+INSERT INTO COUNTRY(code, name) VALUES ('DE', 'Germany');
+INSERT INTO COUNTRY(code, name) VALUES ('UA', 'Ukraine');
+INSERT INTO COUNTRY(code, name) VALUES ('US', 'United States');
+
+-- -----------------------------------------------------
+-- States
+-- -----------------------------------------------------
+INSERT INTO STATE(name, country_id) VALUES('Acre', (SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Alagoas',(SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Amapá',(SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Amazonas',(SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Bahia',(SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Ceará',(SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Distrito Federal',(SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Espírito Santo',(SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Goiás',(SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Maranhão',(SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Mato Grosso do Sul',(SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Mato Grosso',(SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Minas Gerais', (SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Paraná', (SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Paraíba', (SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Pará', (SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Pernambuco',(SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Piaui',(SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Rio de Janeiro', (SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Rio Grande do Norte',(SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Rio Grande do Sul', (SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Rondônia', (SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Roraima', (SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Santa Catarina', (SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Sergipe', (SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('São Paulo', (SELECT id FROM country WHERE code = 'BR'));
+INSERT INTO STATE(name, country_id) VALUES('Tocantins',(SELECT id FROM country WHERE code = 'BR'));
+
+INSERT INTO STATE(name, country_id) VALUES
+('Alberta', (SELECT id FROM country WHERE code = 'CA')),
+('British Columbia', (SELECT id FROM country WHERE code = 'CA')),
+('Manitoba', (SELECT id FROM country WHERE code = 'CA')),
+('New Brunswick', (SELECT id FROM country WHERE code = 'CA')),
+('Newfoundland and Labrador',(SELECT id FROM country WHERE code = 'CA')),
+('Northwest Territories', (SELECT id FROM country WHERE code = 'CA')),
+('Nova Scotia', (SELECT id FROM country WHERE code = 'CA')),
+('Nunavut', (SELECT id FROM country WHERE code = 'CA')),
+('Ontario', (SELECT id FROM country WHERE code = 'CA')),
+('Prince Edward Island', (SELECT id FROM country WHERE code = 'CA')),
+('Quebec', (SELECT id FROM country WHERE code = 'CA')),
+('Saskatchewan', (SELECT id FROM country WHERE code = 'CA')),
+('Yukon', (SELECT id FROM country WHERE code = 'CA'));
+
+INSERT INTO STATE(name, country_id) VALUES
+('Baden-Württemberg', (SELECT id FROM country WHERE code = 'DE')),
+('Bavaria', (SELECT id FROM country WHERE code = 'DE')),
+('Berlin', (SELECT id FROM country WHERE code = 'DE')),
+('Brandenburg', (SELECT id FROM country WHERE code = 'DE')),
+('Bremen', (SELECT id FROM country WHERE code = 'DE')),
+('Hamburg', (SELECT id FROM country WHERE code = 'DE')),
+('Hesse', (SELECT id FROM country WHERE code = 'CA')),
+('Lower Saxony', (SELECT id FROM country WHERE code = 'DE')),
+('Mecklenburg-Vorpommern', (SELECT id FROM country WHERE code = 'DE')),
+('North Rhine-Westphalia', (SELECT id FROM country WHERE code = 'DE')),
+('Rhineland-Palatinate', (SELECT id FROM country WHERE code = 'DE')),
+('Saarland', (SELECT id FROM country WHERE code = 'DE')),
+('Saxony', (SELECT id FROM country WHERE code = 'DE')),
+('Saxony-Anhalt', (SELECT id FROM country WHERE code = 'DE')),
+('Schleswig-Holstein', (SELECT id FROM country WHERE code = 'DE')),
+('Thuringia', (SELECT id FROM country WHERE code = 'DE'));
+
+INSERT INTO STATE(name, country_id) VALUES
+('Alabama', (SELECT id FROM country WHERE code = 'US')),
+('Alaska', (SELECT id FROM country WHERE code = 'US')),
+('Arizona', (SELECT id FROM country WHERE code = 'US')),
+('Arkansas', (SELECT id FROM country WHERE code = 'US')),
+('California', (SELECT id FROM country WHERE code = 'US')),
+('Colorado', (SELECT id FROM country WHERE code = 'US')),
+('Connecticut', (SELECT id FROM country WHERE code = 'US')),
+('Delaware', (SELECT id FROM country WHERE code = 'US')),
+('District Of Columbia', (SELECT id FROM country WHERE code = 'US')),
+('Florida', (SELECT id FROM country WHERE code = 'US')),
+('Georgia', (SELECT id FROM country WHERE code = 'US')),
+('Hawaii', (SELECT id FROM country WHERE code = 'US')),
+('Idaho', (SELECT id FROM country WHERE code = 'US')),
+('Illinois', (SELECT id FROM country WHERE code = 'US')),
+('Indiana', (SELECT id FROM country WHERE code = 'US')),
+('Iowa', (SELECT id FROM country WHERE code = 'US')),
+('Kansas', (SELECT id FROM country WHERE code = 'US')),
+('Kentucky', (SELECT id FROM country WHERE code = 'US')),
+('Louisiana', (SELECT id FROM country WHERE code = 'US')),
+('Maine', (SELECT id FROM country WHERE code = 'US')),
+('Maryland', (SELECT id FROM country WHERE code = 'US')),
+('Massachusetts', (SELECT id FROM country WHERE code = 'US')),
+('Michigan', (SELECT id FROM country WHERE code = 'US')),
+('Minnesota', (SELECT id FROM country WHERE code = 'US')),
+('Mississippi', (SELECT id FROM country WHERE code = 'US')),
+('Missouri', (SELECT id FROM country WHERE code = 'US')),
+('Montana', (SELECT id FROM country WHERE code = 'US')),
+('Nebraska', (SELECT id FROM country WHERE code = 'US')),
+('Nevada', (SELECT id FROM country WHERE code = 'US')),
+('New Hampshire', (SELECT id FROM country WHERE code = 'US')),
+('New Jersey', (SELECT id FROM country WHERE code = 'US')),
+('New Mexico', (SELECT id FROM country WHERE code = 'US')),
+('New York', (SELECT id FROM country WHERE code = 'US')),
+('North Carolina', (SELECT id FROM country WHERE code = 'US')),
+('North Dakota', (SELECT id FROM country WHERE code = 'US')),
+('Ohio', (SELECT id FROM country WHERE code = 'US')),
+('Oklahoma', (SELECT id FROM country WHERE code = 'US')),
+('Oregon', (SELECT id FROM country WHERE code = 'US')),
+('Pennsylvania', (SELECT id FROM country WHERE code = 'US')),
+('Rhode Island', (SELECT id FROM country WHERE code = 'US')),
+('South Carolina', (SELECT id FROM country WHERE code = 'US')),
+('South Dakota', (SELECT id FROM country WHERE code = 'US')),
+('Tennessee', (SELECT id FROM country WHERE code = 'US')),
+('Texas', (SELECT id FROM country WHERE code = 'US')),
+('Utah', (SELECT id FROM country WHERE code = 'US')),
+('Vermont', (SELECT id FROM country WHERE code = 'US')),
+('Virginia', (SELECT id FROM country WHERE code = 'US')),
+('Washington', (SELECT id FROM country WHERE code = 'US')),
+('West Virginia', (SELECT id FROM country WHERE code = 'US')),
+('Wisconsin', (SELECT id FROM country WHERE code = 'US')),
+('Wyoming', (SELECT id FROM country WHERE code = 'US'));
+
+INSERT INTO STATE (name, country_id) VALUES
+('Odessa', (SELECT id FROM country WHERE code = 'UA')),
+('Kiev', (SELECT id FROM country WHERE code = 'UA')),
+('Lviv', (SELECT id FROM country WHERE code = 'UA')),
+('Nikolaev', (SELECT id FROM country WHERE code = 'UA')),
+('Chernigov', (SELECT id FROM country WHERE code = 'UA')),
+('Dnipro', (SELECT id FROM country WHERE code = 'UA')),
+('Kharkov', (SELECT id FROM country WHERE code = 'UA'));
