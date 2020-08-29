@@ -1,7 +1,9 @@
 package com.dmly.ecommerce.config;
 
+import com.dmly.ecommerce.entiry.Country;
 import com.dmly.ecommerce.entiry.Product;
 import com.dmly.ecommerce.entiry.ProductCategory;
+import com.dmly.ecommerce.entiry.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -29,17 +31,19 @@ public class DataRestConfig implements RepositoryRestConfigurer {
 
         HttpMethod[] unsupportedMethods = {HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE};
 
-        config.getExposureConfiguration()
-                .forDomainType(Product.class)
-                .withItemExposure((metdata, httpMethods) -> httpMethods.disable(unsupportedMethods))
-                .withCollectionExposure((metdata, httpMethods) -> httpMethods.disable(unsupportedMethods));
-
-        config.getExposureConfiguration()
-                .forDomainType(ProductCategory.class)
-                .withItemExposure((metdata, httpMethods) -> httpMethods.disable(unsupportedMethods))
-                .withCollectionExposure((metdata, httpMethods) -> httpMethods.disable(unsupportedMethods));
+        disableHttpMethods(Product.class, config, unsupportedMethods);
+        disableHttpMethods(ProductCategory.class, config, unsupportedMethods);
+        disableHttpMethods(Country.class, config, unsupportedMethods);
+        disableHttpMethods(State.class, config, unsupportedMethods);
 
         exposeIds(config);
+    }
+
+    private void disableHttpMethods(Class<?> aClass,  RepositoryRestConfiguration config, HttpMethod[] unsupportedMethods) {
+        config.getExposureConfiguration()
+                .forDomainType(aClass)
+                .withItemExposure((metadata, httpMethods) -> httpMethods.disable(unsupportedMethods))
+                .withCollectionExposure((metadata, httpMethods) -> httpMethods.disable(unsupportedMethods));
     }
 
     private void exposeIds(RepositoryRestConfiguration config) {
