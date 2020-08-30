@@ -1,3 +1,7 @@
-docker run -d -e POSTGRES_PASSWORD=password -v postgres:/var/lib/postgresql/data -p 5432:5432 postgres
+docker run -d -e POSTGRES_PASSWORD=password -v postgres:/var/lib/postgresql/data -p 5432:5432 --name ecommerce-db --network ecommerce postgres:12
 
 docker exec --interactive --tty <name> bash
+
+docker build -t dmly/ecommerce-app -f ./app.dockerfile .
+
+docker run -d -p 8080:8080 --name ecommerce-app --network ecommerce dmly/ecommerce-app
